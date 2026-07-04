@@ -2,7 +2,8 @@
 FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime
 
 ENV PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    UV_CACHE_DIR=/tmp/uv-cache
 
 WORKDIR /app
 
@@ -56,6 +57,8 @@ PY
 RUN pip install --no-cache-dir -r /tmp/requirements-no-torch.txt
 
 COPY . /app
+
+RUN pip install --no-cache-dir -r /app/manager_requirements.txt
 
 RUN mkdir -p /app/models /app/input /app/output /app/custom_nodes /app/user
 

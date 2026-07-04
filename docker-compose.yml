@@ -2,6 +2,7 @@ name: comfyui
 services:
   comfyui:
     container_name: comfyui
+    user: "${COMFYUI_UID:-1000}:${COMFYUI_GID:-1000}"
     build:
       context: .
       dockerfile: Dockerfile
@@ -23,6 +24,7 @@ services:
       - ./output:/app/output
       - ./custom_nodes:/app/custom_nodes
       - ./user:/app/user
+      - ./temp:/app/temp
     deploy:
       resources:
         reservations:
