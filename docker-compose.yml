@@ -9,7 +9,7 @@ services:
         INSTALL_TORCH: ${INSTALL_TORCH:-0}
         TORCH_INDEX_URL: ${TORCH_INDEX_URL:-}
     image: comfyui:latest
-    restart: unless-stopped
+    # restart: unless-stopped
     ports:
       - "${COMFYUI_PORT:-8188}:8188"
     environment:
@@ -30,4 +30,4 @@ services:
             - driver: nvidia
               count: ${GPU_COUNT:-all}
               capabilities: [gpu]
-    command: ["python", "-u", "main.py", "--listen", "0.0.0.0", "--port", "${COMFYUI_PORT:-8188}"]
+    command: ["python", "-u", "main.py", "--listen", "0.0.0.0", "--port", "8188"]
