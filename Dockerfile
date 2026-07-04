@@ -1,0 +1,64 @@
+# syntax=docker/dockerfile:1.6
+FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        git \
+        ffmpeg \
+        libgl1 \
+        libglib2.0-0 \
+        libsm6 \
+        libxrender1 \
+        libxext6 \
+        build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /tmp/requirements.txt
+
+ARG INSTALL_TORCH=0
+ARG TORCH_INDEX_URL=
+RUN set -eux; \
+    pip install --upgrade pip; \
+    if [ "$INSTALL_TORCH" = "1" ]; then \
+        if [ -n "$TORCH_INDEX_URL" ]; then \
+            pip install torch torchvision torchaudio --index-url "$TORCH_INDEX_URL"; \
+        else \
+            pip install torch torchvision torchaudio; \
+        fi; \
+    fi
+
+RUN python - <<'PY'
+from pathlib import Path
+src = Path("/tmp/requirements.txt")
+skip = {"torch", "torchvision", "torchaudio"}
+out = []
+for line in src.read_text().splitlines():
+    stripped = line.strip()
+    if not stripped or stripped.startswith("#"):
+        out.append(line)
+        continue
+    candidate = stripped.split(";", 1)[0]
+    candidate = candidate.split("[", 1)[0]
+    for sep in ("==", ">=", "<=", "~=", "!=", "===", ","):
+        candidate = candidate.split(sep, 1)[0]
+    candidate = candidate.strip()
+    if candidate in skip:
+        continue
+    out.append(line)
+Path("/tmp/requirements-no-torch.txt").write_text("\n".join(out) + "\n")
+PY
+
+RUN pip install --no-cache-dir -r /tmp/requirements-no-torch.txt
+
+COPY . /app
+
+RUN mkdir -p /app/models /app/input /app/output /app/custom_nodes /app/user
+
+EXPOSE 8188
+
+CMD ["python", "-u", "main.py", "--listen", "0.0.0.0"]
