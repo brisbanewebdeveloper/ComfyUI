@@ -11,7 +11,7 @@ extra_model_paths.yaml
 /.vs
 .vscode/
 .idea/
-venv/
+venv*/
 .venv/
 /web/extensions/*
 !/web/extensions/logging.js.example
@@ -26,3 +26,4 @@ filtered-openapi.yaml
 uv.lock
 .history/
 .env
+.comfy_environment
