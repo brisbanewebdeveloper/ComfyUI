@@ -6,4 +6,3 @@ set -e
 
 cd "$COMFYUI_HOST_ROOT"
 docker compose down
-docker compose up -d --build --remove-orphans
