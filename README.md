@@ -1,5 +1,9 @@
 <div align="center">
 
+# This branch is customized to use Docker etc
+
+Read `CUSTOMIZATION.md` for more details.
+
 # ComfyUI
 **The most powerful and modular AI engine for content creation.**
 

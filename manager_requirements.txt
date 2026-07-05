@@ -3,6 +3,9 @@ PyGithub
 matrix-nio
 transformers
 huggingface-hub
+diffusers==0.35.2
+accelerate
+omegaconf
 typer
 rich
 typing-extensions
