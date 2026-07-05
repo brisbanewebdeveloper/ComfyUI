@@ -16,6 +16,7 @@ RUN apt-get update && \
         libsm6 \
         libxrender1 \
         libxext6 \
+        curl \
         build-essential \
     && rm -rf /var/lib/apt/lists/*
 
