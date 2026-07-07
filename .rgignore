@@ -19,6 +19,7 @@ models/
 input/
 output/
 custom_nodes/
+custom_nodes.disabled/
 *.safetensors
 *.ckpt
 *.pt

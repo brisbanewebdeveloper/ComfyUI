@@ -6,6 +6,7 @@ __pycache__/
 /models/
 /temp/
 /custom_nodes/*
+/custom_nodes.disabled/*
 !custom_nodes/example_node.py.example
 !custom_nodes/pre_prompt_command/
 /custom_nodes/pre_prompt_command/*
