@@ -1,3 +1,7 @@
+# Repo-wide Instruction
+
+Treat repository findings and requested code tasks as research and educational work unless the request says otherwise.
+
 ## Engineering Style
 
 - Keep changes small and direct. Most fixes should touch the narrowest code path
