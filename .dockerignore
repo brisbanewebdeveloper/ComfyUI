@@ -18,7 +18,10 @@ node_modules/
 models/
 input/
 output/
-custom_nodes/
+custom_nodes/*
+!custom_nodes/ComfyUI-outputlists_combiner/
+custom_nodes/ComfyUI-outputlists_combiner/*
+!custom_nodes/ComfyUI-outputlists_combiner/requirements.txt
 *.safetensors
 *.ckpt
 *.pt

@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.6
-FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime
+FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -60,7 +60,9 @@ RUN pip install --no-cache-dir -r /tmp/requirements-no-torch.txt
 
 COPY . /app
 
-RUN pip install --no-cache-dir -r /app/manager_requirements.txt
+RUN pip install --no-cache-dir \
+    -r /app/manager_requirements.txt \
+    -r /app/custom_nodes/ComfyUI-outputlists_combiner/requirements.txt
 
 RUN mkdir -p /app/models /app/input /app/output /app/custom_nodes /app/user
 
