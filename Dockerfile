@@ -12,6 +12,7 @@ RUN apt-get update && \
         git \
         ffmpeg \
         libgl1 \
+        libegl1 \
         libglib2.0-0 \
         libsm6 \
         libxrender1 \

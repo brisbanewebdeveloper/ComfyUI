@@ -10,7 +10,7 @@ services:
         INSTALL_TORCH: ${INSTALL_TORCH:-0}
         TORCH_INDEX_URL: ${TORCH_INDEX_URL:-}
     image: comfyui:latest
-    # restart: unless-stopped
+    restart: unless-stopped
     ports:
       - "${COMFYUI_PORT:-8188}:8188"
     extra_hosts:
