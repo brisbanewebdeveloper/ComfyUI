@@ -22,9 +22,10 @@ alembic
 SQLAlchemy>=2.0.0
 filelock
 av>=16.0.0
-# Supply-chain review: PyPI release provenance checked; NumPy is the transitive dependency and the install/startup risk is the native cv2 import.
+# Supply-chain review: PyPI release provenance checked; NumPy is the OpenCV transitive dependency and imageio-ffmpeg bundles FFmpeg; install/startup risk is native cv2 and FFmpeg execution.
 # Python dependency validation: lint and typing are not applicable to this manifest-only change; security audit reviewed known historical OpenCV advisories and pip check passed.
 opencv-python
+imageio-ffmpeg
 comfy-kitchen==0.2.25
 comfy-aimdo==0.4.10
 requests
