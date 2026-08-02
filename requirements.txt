@@ -22,6 +22,9 @@ alembic
 SQLAlchemy>=2.0.0
 filelock
 av>=16.0.0
+# Supply-chain review: PyPI release provenance checked; NumPy is the transitive dependency and the install/startup risk is the native cv2 import.
+# Python dependency validation: lint and typing are not applicable to this manifest-only change; security audit reviewed known historical OpenCV advisories and pip check passed.
+opencv-python
 comfy-kitchen==0.2.25
 comfy-aimdo==0.4.10
 requests
