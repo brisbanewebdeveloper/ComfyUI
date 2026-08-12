@@ -1,4 +1,20 @@
 # syntax=docker/dockerfile:1.6
+FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-devel AS sageattention-builder
+
+ARG SAGEATTENTION_COMMIT=eb615cf6cf4d221338033340ee2de1c37fbdba4a
+ENV TORCH_CUDA_ARCH_LIST=8.9 \
+    EXT_PARALLEL=2 \
+    MAX_JOBS=8
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/thu-ml/SageAttention.git /tmp/SageAttention && \
+    cd /tmp/SageAttention && \
+    git checkout "$SAGEATTENTION_COMMIT" && \
+    pip wheel --no-build-isolation --no-deps --wheel-dir /wheels .
+
 FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
 
 ENV PYTHONUNBUFFERED=1 \
@@ -57,6 +73,10 @@ Path("/tmp/requirements-no-torch.txt").write_text("\n".join(out) + "\n")
 PY
 
 RUN pip install --no-cache-dir -r /tmp/requirements-no-torch.txt
+
+COPY --from=sageattention-builder /wheels/sageattention-2.2.0-*.whl /tmp/
+RUN pip install --no-cache-dir /tmp/sageattention-2.2.0-*.whl && \
+    rm /tmp/sageattention-2.2.0-*.whl
 
 COPY . /app
 
