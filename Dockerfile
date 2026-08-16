@@ -83,7 +83,8 @@ COPY . /app
 
 RUN pip install --no-cache-dir \
     -r /app/manager_requirements.txt \
-    -r /app/custom_nodes/ComfyUI-outputlists_combiner/requirements.txt
+    -r /app/custom_nodes/ComfyUI-outputlists_combiner/requirements.txt \
+    -r /app/custom_nodes/ComfyUI-GGUF/requirements.txt
 
 RUN mkdir -p /app/models /app/input /app/output /app/custom_nodes /app/user
 

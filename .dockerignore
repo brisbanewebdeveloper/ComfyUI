@@ -22,6 +22,9 @@ custom_nodes/*
 !custom_nodes/ComfyUI-outputlists_combiner/
 custom_nodes/ComfyUI-outputlists_combiner/*
 !custom_nodes/ComfyUI-outputlists_combiner/requirements.txt
+!custom_nodes/ComfyUI-GGUF/
+custom_nodes/ComfyUI-GGUF/*
+!custom_nodes/ComfyUI-GGUF/requirements.txt
 *.safetensors
 *.ckpt
 *.pt
