@@ -31,3 +31,4 @@ uv.lock
 .history/
 .env
 .comfy_environment
+.playwright-cli
