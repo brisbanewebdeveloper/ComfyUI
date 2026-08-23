@@ -49,7 +49,7 @@ class TestPrePromptCommand(TestCase):
         with patch.dict(os.environ, env, clear=True), patch.object(module.subprocess, "run", fail_run):
             provider.on_prompt_start("prompt-1")
 
-    def test_provider_runs_configured_command_with_timeout(self):
+    def test_provider_runs_configured_command_without_a_shell(self):
         module = load_pre_prompt_module()
         provider = module.PrePromptCommandProvider()
         calls = []
@@ -73,9 +73,9 @@ class TestPrePromptCommand(TestCase):
             calls,
             [
                 (
-                    ("curl http://host.docker.internal:11434/api/ps",),
+                    (["curl", "http://host.docker.internal:11434/api/ps"],),
                     {
-                        "shell": True,
+                        "shell": False,
                         "check": False,
                         "timeout": 2.5,
                         "capture_output": True,
@@ -84,6 +84,23 @@ class TestPrePromptCommand(TestCase):
                 )
             ],
         )
+
+    def test_provider_rejects_invalid_command_quoting(self):
+        module = load_pre_prompt_module()
+        provider = module.PrePromptCommandProvider()
+
+        def fail_run(*args, **kwargs):
+            raise AssertionError("subprocess.run should not be called")
+
+        env = {**os.environ, "COMFYUI_PRE_PROMPT_COMMAND": "curl 'unterminated"}
+        with (
+            patch.dict(os.environ, env, clear=True),
+            patch.object(module.subprocess, "run", fail_run),
+            self.assertLogs(module.logger, level="WARNING") as logs,
+        ):
+            provider.on_prompt_start("prompt-1")
+
+        self.assertIn("could not be parsed", logs.output[0])
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import logging
 import os
+import shlex
 import subprocess
 
 from comfy_execution.cache_provider import CacheProvider, register_cache_provider
@@ -50,9 +51,18 @@ class PrePromptCommandProvider(CacheProvider):
 
         timeout = _configured_timeout()
         try:
+            argv = shlex.split(command)
+        except ValueError as err:
+            logger.warning("Pre-prompt command could not be parsed: %s", err)
+            return
+        if not argv:
+            logger.warning("Pre-prompt command does not contain an executable")
+            return
+
+        try:
             result = subprocess.run(
-                command,
-                shell=True,
+                argv,
+                shell=False,
                 check=False,
                 timeout=timeout,
                 capture_output=True,

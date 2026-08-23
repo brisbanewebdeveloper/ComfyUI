@@ -22,6 +22,7 @@ services:
       NVIDIA_DRIVER_CAPABILITIES: "${NVIDIA_DRIVER_CAPABILITIES:-compute,utility}"
       COMFYUI_PRE_PROMPT_COMMAND: "${COMFYUI_PRE_PROMPT_COMMAND:-}"
       COMFYUI_PRE_PROMPT_COMMAND_TIMEOUT: "${COMFYUI_PRE_PROMPT_COMMAND_TIMEOUT:-10}"
+      H3STUDIO_TELEMETRY: "${H3STUDIO_TELEMETRY:-0}"
     volumes:
       - ./models:/app/models
       - ./input:/app/input
