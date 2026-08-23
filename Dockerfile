@@ -83,6 +83,7 @@ COPY . /app
 
 RUN pip install --no-cache-dir \
     -r /app/manager_requirements.txt \
+    -r /app/custom_nodes/comfyui-easy-use/requirements.txt \
     -r /app/custom_nodes/ComfyUI-outputlists_combiner/requirements.txt \
     -r /app/custom_nodes/ComfyUI-GGUF/requirements.txt
 
