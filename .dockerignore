@@ -28,6 +28,9 @@ custom_nodes/ComfyUI-GGUF/*
 !custom_nodes/comfyui-easy-use/
 custom_nodes/comfyui-easy-use/*
 !custom_nodes/comfyui-easy-use/requirements.txt
+!custom_nodes/RES4LYF/
+custom_nodes/RES4LYF/*
+!custom_nodes/RES4LYF/requirements.txt
 *.safetensors
 *.ckpt
 *.pt
