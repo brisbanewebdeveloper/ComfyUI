@@ -24,6 +24,9 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
+RUN if ! getent group 1000 >/dev/null; then groupadd --gid 1000 comfyui; fi && \
+    if ! getent passwd 1000 >/dev/null; then useradd --uid 1000 --gid 1000 --no-create-home --shell /usr/sbin/nologin comfyui; fi
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         git \
@@ -87,7 +90,8 @@ RUN pip install --no-cache-dir \
     -r /app/custom_nodes/ComfyUI-outputlists_combiner/requirements.txt \
     -r /app/custom_nodes/ComfyUI-GGUF/requirements.txt \
     -r /app/custom_nodes/RES4LYF/requirements.txt \
-    -r /app/custom_nodes/ComfyUI-UtilsCollection/requirements.txt
+    -r /app/custom_nodes/ComfyUI-UtilsCollection/requirements.txt \
+    -r /app/custom_nodes/VideoX-Fun/requirements.txt
 
 RUN mkdir -p /app/models /app/input /app/output /app/custom_nodes /app/user
 
