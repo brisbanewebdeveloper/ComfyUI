@@ -86,7 +86,8 @@ RUN pip install --no-cache-dir \
     -r /app/custom_nodes/comfyui-easy-use/requirements.txt \
     -r /app/custom_nodes/ComfyUI-outputlists_combiner/requirements.txt \
     -r /app/custom_nodes/ComfyUI-GGUF/requirements.txt \
-    -r /app/custom_nodes/RES4LYF/requirements.txt
+    -r /app/custom_nodes/RES4LYF/requirements.txt \
+    -r /app/custom_nodes/ComfyUI-UtilsCollection/requirements.txt
 
 RUN mkdir -p /app/models /app/input /app/output /app/custom_nodes /app/user
 
