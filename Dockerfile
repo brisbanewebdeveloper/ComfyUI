@@ -78,6 +78,12 @@ PY
 
 RUN pip install --no-cache-dir -r /tmp/requirements-no-torch.txt
 
+# NVIDIA's VFX wheel is published on its package index and is required by the
+# RTX Video Super Resolution custom node.
+RUN pip install --no-cache-dir \
+    --index-url https://pypi.nvidia.com/ \
+    nvidia-vfx==0.1.0.1
+
 COPY --from=sageattention-builder /wheels/sageattention-2.2.0-*.whl /tmp/
 RUN pip install --no-cache-dir /tmp/sageattention-2.2.0-*.whl && \
     rm /tmp/sageattention-2.2.0-*.whl
