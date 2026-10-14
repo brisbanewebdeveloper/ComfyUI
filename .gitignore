@@ -32,3 +32,4 @@ uv.lock
 .env
 .comfy_environment
 .playwright-cli
+/previews/
