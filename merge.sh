@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Usage: merge.sh [source-branch] [target-branch] | merge.sh --resolve
-# Defaults: current branch -> custom.
+# Defaults: current branch -> the other local branch when exactly two exist;
+# otherwise, current branch -> custom.
 if (( $# > 2 )) || { [[ ${1:-} == --resolve ]] && (( $# != 1 )); }; then
     printf '%s\n' 'Usage: merge.sh [source-branch] [target-branch] | merge.sh --resolve' >&2
     exit 2
@@ -32,12 +33,24 @@ else
     fi
 
     source_branch=${1:-}
-    target_branch=${2:-custom}
     if [[ -z "$source_branch" ]]; then
         source_branch=$(git symbolic-ref --quiet --short HEAD) || {
             printf '%s\n' 'Detached HEAD: provide an explicit source branch.' >&2
             exit 1
         }
+    fi
+
+    target_branch=${2:-custom}
+    if [[ -z ${2:-} ]]; then
+        branch_list=$(git for-each-ref --format='%(refname:short)' refs/heads/) || exit $?
+        mapfile -t local_branches <<< "$branch_list"
+        if (( ${#local_branches[@]} == 2 )); then
+            if [[ ${local_branches[0]} == "$source_branch" ]]; then
+                target_branch=${local_branches[1]}
+            elif [[ ${local_branches[1]} == "$source_branch" ]]; then
+                target_branch=${local_branches[0]}
+            fi
+        fi
     fi
 
     if [[ "$source_branch" == "$target_branch" ]]; then
