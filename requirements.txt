@@ -1,5 +1,5 @@
-comfyui-frontend-package==1.55.17
-comfyui-workflow-templates==0.11.82
+comfyui-frontend-package==1.57.1
+comfyui-workflow-templates==0.11.96
 comfyui-embedded-docs==0.5.14
 torch
 torchsde
@@ -13,7 +13,7 @@ safetensors>=0.4.2
 aiohttp>=3.11.8
 yarl>=1.18.0
 pyyaml
-Pillow
+Pillow>=10.1.0
 scipy
 tqdm
 psutil
@@ -25,8 +25,8 @@ av>=17.0.0
 # Python dependency validation: lint and typing are not applicable to this manifest-only change; security audit reviewed known historical OpenCV advisories and pip check passed.
 opencv-python
 imageio-ffmpeg
-comfy-kitchen==0.2.37
-comfy-aimdo==0.5.6
+comfy-aimdo==0.6.0
+comfy-kitchen==0.2.40
 requests
 simpleeval>=1.0.0
 blake3

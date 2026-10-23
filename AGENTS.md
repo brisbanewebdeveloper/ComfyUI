@@ -157,6 +157,17 @@ Treat repository findings and requested code tasks as research and educational w
   or describe obvious behavior. Short TODOs are fine when they name the concrete
   missing follow-up.
 
+## Model Integration
+
+- Reuse native ComfyUI loaders and nodes wherever possible. Extend existing
+  loading paths before introducing model-specific loaders.
+- Use standard `MODEL`, `CLIP`, and `VAE` interfaces where they fit, preferring
+  the regular checkpoint loader for bundled components.
+- Package weights as single `.safetensors` files in the normal model folders;
+  never require model directories. Provide a conversion script when repackaging.
+- Use native execution and optimization mechanisms. Benchmark performance and
+  verify short and long generations against the reference implementation.
+
 ## Model, Device, and Memory Behavior
 
 - Treat dtype, device placement, VRAM usage, and offloading behavior as core
@@ -336,8 +347,7 @@ Treat repository findings and requested code tasks as research and educational w
 
 ## Nodes and User-Facing Behavior
 
-- Follow existing node conventions: `INPUT_TYPES`, `RETURN_TYPES`, `FUNCTION`,
-  `CATEGORY`, and registration through the local mapping used by that file.
+- Use V3 schemas for new nodes and reuse existing native nodes wherever possible.
 - Treat legacy combo inputs, `io.Combo`, and `io.DynamicCombo` values as
   untrusted when they affect filesystem access. Any value used as a file or
   folder name, path component, format, or extension must be validated again at
