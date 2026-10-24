@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1.6
+ARG COMFYUI_APP_IMAGE=application
 FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-devel AS sageattention-builder
 
 ARG SAGEATTENTION_COMMIT=eb615cf6cf4d221338033340ee2de1c37fbdba4a
@@ -15,7 +16,7 @@ RUN git clone https://github.com/thu-ml/SageAttention.git /tmp/SageAttention && 
     git checkout "$SAGEATTENTION_COMMIT" && \
     pip wheel --no-build-isolation --no-deps --wheel-dir /wheels .
 
-FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime
+FROM pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime AS application
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -104,3 +105,15 @@ RUN mkdir -p /app/models /app/input /app/output /app/custom_nodes /app/user
 EXPOSE 8188
 
 CMD ["python", "-u", "main.py", "--listen", "0.0.0.0"]
+
+# CA-only maintenance can reuse a reviewed application image without recompiling CUDA.
+FROM ${COMFYUI_APP_IMAGE} AS runtime
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge '20260816ubuntu0.22.04.1' \
+    && rm -rf /var/lib/apt/lists/*
+RUN python -m pip --isolated install --index-url https://pypi.org/simple \
+    --cert /etc/ssl/certs/ca-certificates.crt --no-cache-dir --only-binary=:all: \
+    --no-deps --upgrade pip==26.2.2 certifi==2026.10.23
+COPY docker/secure-trust.py /tmp/secure-trust.py
+RUN python /tmp/secure-trust.py && rm /tmp/secure-trust.py
