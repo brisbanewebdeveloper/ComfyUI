@@ -117,3 +117,10 @@ RUN python -m pip --isolated install --index-url https://pypi.org/simple \
     --no-deps --upgrade pip==26.2.2 certifi==2026.10.23
 COPY docker/secure-trust.py /tmp/secure-trust.py
 RUN python /tmp/secure-trust.py && rm /tmp/secure-trust.py
+
+# FaceRefine dependencies are reviewed wheels; retain the CUDA and OpenCV stack.
+COPY docker/h3-facerefine-requirements.txt /tmp/h3-facerefine-requirements.txt
+RUN python -m pip --isolated install --index-url https://pypi.org/simple \
+    --cert /etc/ssl/certs/ca-certificates.crt --no-cache-dir --only-binary=:all: \
+    --no-deps --require-hashes -r /tmp/h3-facerefine-requirements.txt \
+    && rm /tmp/h3-facerefine-requirements.txt
