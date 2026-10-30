@@ -6,10 +6,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        INSTALL_TORCH: ${INSTALL_TORCH:-0}
-        TORCH_INDEX_URL: ${TORCH_INDEX_URL:-}
-    image: comfyui:latest
+      target: runtime
+    image: ${COMFYUI_IMAGE:-comfyui:cu130}
     restart: unless-stopped
     ports:
       - "${COMFYUI_PORT:-8188}:8188"

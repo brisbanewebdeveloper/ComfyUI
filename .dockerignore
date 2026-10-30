@@ -18,6 +18,8 @@ node_modules/
 models/
 input/
 output/
+user/
+temp/
 custom_nodes/*
 !custom_nodes/ComfyUI-outputlists_combiner/
 custom_nodes/ComfyUI-outputlists_combiner/*
