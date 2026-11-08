@@ -22,7 +22,7 @@ import comfy_kitchen as ck
 def main() -> None:
     expected = {'torch': '2.9.1+cu130', 'torchvision': '0.24.1+cu130',
                 'torchaudio': '2.9.1+cu130', 'sageattention': '2.2.0',
-                'triton': '3.5.1', 'comfy-kitchen': '0.2.40', 'comfy-aimdo': '0.6.0'}
+                'triton': '3.5.1', 'comfy-kitchen': '0.2.41', 'comfy-aimdo': '0.6.0'}
     actual = {name: version(name) for name in expected}
     assert actual == expected, actual
     assert torch.version.cuda == '13.0'
