@@ -165,8 +165,9 @@ Treat repository findings and requested code tasks as research and educational w
 
 ## Model Integration
 
-- Reuse native ComfyUI loaders and nodes wherever possible. Extend existing
-  loading paths before introducing model-specific loaders.
+- Reuse native loaders, nodes, model configuration, and state-dict processing
+  interfaces without changing shared loaders or unrelated models; convert
+  incompatible checkpoint layouts locally.
 - Use standard `MODEL`, `CLIP`, and `VAE` interfaces where they fit, preferring
   the regular checkpoint loader for bundled components.
 - Package weights as single `.safetensors` files in the normal model folders;
