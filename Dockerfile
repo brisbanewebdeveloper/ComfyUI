@@ -69,6 +69,20 @@ COPY --from=sageattention-builder /wheels/sageattention-2.2.0-*.whl /tmp/
 RUN pip install --no-cache-dir --no-deps /tmp/sageattention-2.2.0-*.whl && \
     rm /tmp/sageattention-2.2.0-*.whl
 
+# Decord's Linux wheel advertises py3-none in its filename but stores cp36-cp36m internally.
+# Verify the published archive, then repack it to correct the tag and stale top_level.txt hash.
+RUN set -eux; \
+    decord_dir="$(mktemp -d)"; \
+    cd "$decord_dir"; \
+    pip download --index-url https://pypi.org/simple --no-deps --only-binary=:all: decord==0.6.0; \
+    echo '51997f20be8958e23b7c4061ba45d0efcd86bffd5fe81c695d0befee0d442976  decord-0.6.0-py3-none-manylinux2010_x86_64.whl' | sha256sum -c -; \
+    python -m zipfile -e decord-0.6.0-py3-none-manylinux2010_x86_64.whl unpacked; \
+    sed -i 's/^Tag: cp36-cp36m-manylinux2010_x86_64$/Tag: py3-none-manylinux2010_x86_64/' unpacked/decord-0.6.0.dist-info/WHEEL; \
+    python -m wheel pack unpacked; \
+    pip install --no-deps ./decord-0.6.0-py3-none-manylinux2010_x86_64.whl; \
+    cd /; \
+    rm -rf "$decord_dir"
+
 COPY . /app
 
 RUN pip install --no-cache-dir \
